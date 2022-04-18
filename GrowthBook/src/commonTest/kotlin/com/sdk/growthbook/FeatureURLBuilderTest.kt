@@ -1,6 +1,5 @@
 package com.sdk.growthbook
 
-import com.sdk.growthbook.features.FeatureURLBuilder
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

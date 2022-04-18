@@ -13,8 +13,6 @@ group = "io.growthbook.sdk"
 val iOSBinaryName = "GrowthBook"
 
 kotlin {
-
-    val ktorVersion = "1.6.7"
     val serializationVersion = "1.3.2"
 
     android {
@@ -22,7 +20,6 @@ kotlin {
     }
 
 //    jvm()
-
 
     val xcf = XCFramework()
     listOf(
@@ -32,6 +29,7 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = iOSBinaryName
+            embedBitcode("disable")
             xcf.add(this)
         }
     }
@@ -57,8 +55,6 @@ kotlin {
                 implementation(
                     "org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion"
                 )
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("com.ionspin.kotlin:bignum:0.3.3")
             }
         }
@@ -69,22 +65,10 @@ kotlin {
                 implementation(
                     "org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion"
                 )
-                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
             }
         }
-        val androidMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-client-android:$ktorVersion")
-                implementation("androidx.startup:startup-runtime:1.1.1")
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13.2")
-                implementation("org.mockito:mockito-core:4.2.0")
-            }
-        }
+        val androidMain by getting
+        val androidTest by getting
 
         val iosX64Main by getting
         val iosArm64Main by getting
@@ -96,9 +80,6 @@ kotlin {
 
         val iosMain by creating {
             dependsOn(commonMain)
-            dependencies {
-                implementation("io.ktor:ktor-client-ios:$ktorVersion")
-            }
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
@@ -118,10 +99,6 @@ kotlin {
             iosArm64Test.dependsOn(this)
             iosSimulatorArm64Test.dependsOn(this)
         }
-
-
-//        val jvmMain by getting
-//        val jvmTest by getting
     }
 
 }
@@ -140,7 +117,6 @@ val dokkaOutputDir = "$buildDir/dokka"
 tasks.dokkaHtml {
     outputDirectory.set(file(dokkaOutputDir))
 }
-
 
 /**
  * This task deletes older documents
@@ -168,8 +144,10 @@ publishing {
     repositories {
         maven {
             name = "kotlin"
-            val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            val releasesRepoUrl =
+                uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            val snapshotsRepoUrl =
+                uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
             url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
             credentials {
                 username = sonatypeUsername
@@ -209,7 +187,6 @@ publishing {
         }
     }
 }
-
 
 /**
  * Signing JAR using GPG Keys
@@ -285,13 +262,17 @@ tasks.register("prepareReleaseOfiOSXCFramework") {
                 // Calculate checksum
                 project.exec {
                     workingDir = File("$rootDir")
-                    commandLine("swift", "package", "compute-checksum", "${iOSBinaryName}.xcframework.zip")
+                    commandLine(
+                        "swift",
+                        "package",
+                        "compute-checksum",
+                        "${iOSBinaryName}.xcframework.zip"
+                    )
                     standardOutput = outputStream
                 }
 
                 outputStream.toString()
             }
-
 
         val spmdir = File("$rootDir/Package.swift")
         val spmtempFile = File("$rootDir/Package.swift.new")
@@ -345,6 +326,13 @@ tasks.register("publishiOSXCFramework") {
     // Publish to CocoaPod Trunk
     project.exec {
         workingDir = File("$rootDir")
-        commandLine("pod", "trunk", "push", "${iOSBinaryName}.podspec", "--verbose", "--allow-warnings").standardOutput
+        commandLine(
+            "pod",
+            "trunk",
+            "push",
+            "${iOSBinaryName}.podspec",
+            "--verbose",
+            "--allow-warnings"
+        ).standardOutput
     }
 }

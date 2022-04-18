@@ -2,7 +2,6 @@ package com.sdk.growthbook.tests
 
 import com.sdk.growthbook.evaluators.GBFeatureEvaluator
 import com.sdk.growthbook.Utils.toHashMap
-import com.sdk.growthbook.model.GBContext
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonObject

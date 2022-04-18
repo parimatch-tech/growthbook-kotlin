@@ -1,11 +1,10 @@
 package com.sdk.growthbook.evaluators
 
-import com.sdk.growthbook.GBTrackingCallback
 import com.sdk.growthbook.Utils.Constants
 import com.sdk.growthbook.Utils.GBBucketRange
+import com.sdk.growthbook.Utils.GBTrackingCallback
 import com.sdk.growthbook.Utils.GBUtils
 import com.sdk.growthbook.Utils.toJsonElement
-import com.sdk.growthbook.model.GBContext
 import com.sdk.growthbook.model.GBExperiment
 import com.sdk.growthbook.model.GBExperimentResult
 import com.sdk.growthbook.model.GBLocalContext
@@ -15,17 +14,6 @@ import com.sdk.growthbook.model.GBLocalContext
  * Takes Context & Experiment & returns Experiment Result
  */
 internal class GBExperimentEvaluator {
-
-    /**
-     * Takes Context & Experiment & returns Experiment Result
-     */
-    fun evaluateExperiment(context: GBContext, experiment: GBExperiment): GBExperimentResult {
-        return evaluateExperiment(
-            context.localContext,
-            experiment,
-            context.trackingCallback
-        )
-    }
 
     /**
      * Takes Context & Experiment & returns Experiment Result

@@ -1,8 +1,8 @@
 package com.sdk.growthbook.local
 
-import com.sdk.growthbook.Utils.TrackingCallback
+import com.sdk.growthbook.Utils.GBTrackingCallback
 import com.sdk.growthbook.evaluators.GBFeatureEvaluator
-import com.sdk.growthbook.features.FeaturesDataModel
+import com.sdk.growthbook.model.FeaturesDataModel
 import com.sdk.growthbook.model.GBFeatureResult
 import com.sdk.growthbook.model.GBLocalContext
 import kotlinx.serialization.decodeFromString
@@ -11,7 +11,7 @@ import kotlinx.serialization.json.Json
 class GrowthBookLocalSDK(
     private val localContext: GBLocalContext,
     private val growthBookFeatures: String,
-    private val trackingCallback: TrackingCallback = { _, _ -> }
+    private val trackingCallback: GBTrackingCallback = { _, _ -> }
 ) {
 
     private val gBFeatureEvaluator: GBFeatureEvaluator by lazy { GBFeatureEvaluator() }

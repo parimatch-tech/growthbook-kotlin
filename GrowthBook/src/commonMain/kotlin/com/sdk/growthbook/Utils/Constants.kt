@@ -16,12 +16,6 @@ internal class Constants {
          * ID Attribute Key
          */
         val idAttributeKey = "id"
-
-        /**
-         * Identifier for Caching Feature Data in Internal Storage File
-         */
-        val featureCache = "FeatureCache"
-
     }
 }
 
@@ -38,12 +32,6 @@ typealias GBAttributes = Map<String, Any>
 typealias GBCondition = JsonElement
 
 /**
- * Handler for Refresh Cache Request
- * It updates back whether cache was refreshed or not
- */
-typealias GBCacheRefreshHandler = (Boolean) -> Unit
-
-/**
  * Triple Tuple for GrowthBook Namespaces
  * It has ID, StartRange & EndRange
  */
@@ -54,29 +42,4 @@ typealias GBNameSpace = Triple<String, Float, Float>
  */
 typealias GBBucketRange = Pair<Float, Float>
 
-typealias TrackingCallback = (GBExperiment, GBExperimentResult) -> Unit
-
-/**
- * GrowthBook Error Class to handle any error / exception scenario
- */
-class GBError(error: Throwable?) {
-
-    /**
-     * Error Message for the caught error / exception
-     */
-    lateinit var errorMessage: String
-    /**
-     * Error Stacktrace for the caught error / exception
-     */
-    lateinit var stackTrace: String
-
-    /**
-     * Constructor for initializing
-     */
-    init {
-        if (error != null) {
-            errorMessage = error.message ?: ""
-            stackTrace = error.stackTraceToString()
-        }
-    }
-}
+typealias GBTrackingCallback = (GBExperiment, GBExperimentResult) -> Unit

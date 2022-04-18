@@ -2,9 +2,8 @@ package com.sdk.growthbook.evaluators
 
 import com.sdk.growthbook.Utils.Constants
 import com.sdk.growthbook.Utils.GBUtils
-import com.sdk.growthbook.Utils.TrackingCallback
+import com.sdk.growthbook.Utils.GBTrackingCallback
 import com.sdk.growthbook.Utils.toJsonElement
-import com.sdk.growthbook.model.GBContext
 import com.sdk.growthbook.model.GBExperiment
 import com.sdk.growthbook.model.GBExperimentResult
 import com.sdk.growthbook.model.GBFeature
@@ -30,30 +29,11 @@ internal class GBFeatureEvaluator {
      * Takes Context and Feature Key
      * Returns Calculated Feature Result against that key
      */
-    fun evaluateFeature(context: GBContext, featureKey: String): GBFeatureResult {
-        return try {
-            val targetFeature: GBFeature = context.features.getValue(featureKey)
-            evaluateFeature(
-                targetFeature,
-                featureKey,
-                context.localContext,
-                context.trackingCallback,
-            )
-        } catch (exception: Exception) {
-            // If the key doesn't exist in context.features, return immediately (value = null, source = unknownFeature).
-            prepareResult(value = null, source = GBFeatureSource.unknownFeature)
-        }
-    }
-
-    /**
-     * Takes Context and Feature Key
-     * Returns Calculated Feature Result against that key
-     */
     fun evaluateFeature(
         feature: GBFeature,
         featureKey: String,
         context: GBLocalContext,
-        trackingCallback: TrackingCallback,
+        trackingCallback: GBTrackingCallback,
     ): GBFeatureResult {
         // Loop through the feature rules (if any)
         val rules = feature.rules
