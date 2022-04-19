@@ -33,12 +33,6 @@ class GBTestHelper {
             return array
         }
 
-        fun getFeatureData(): JsonArray {
-
-            val array = testData.jsonObject.get("feature") as JsonArray
-            return array
-        }
-
         fun getBucketRangeData(): JsonArray {
             val array = testData.jsonObject.get("getBucketRange") as JsonArray
             return array
