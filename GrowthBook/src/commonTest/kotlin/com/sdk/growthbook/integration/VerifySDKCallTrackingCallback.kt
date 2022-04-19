@@ -1,6 +1,6 @@
 package com.sdk.growthbook.integration
 
-import com.sdk.growthbook.Utils.GBTrackingCallback
+import com.sdk.growthbook.utils.GBTrackingCallback
 import com.sdk.growthbook.local.GrowthBookLocalSDK
 import com.sdk.growthbook.model.GBLocalContext
 import org.intellij.lang.annotations.Language

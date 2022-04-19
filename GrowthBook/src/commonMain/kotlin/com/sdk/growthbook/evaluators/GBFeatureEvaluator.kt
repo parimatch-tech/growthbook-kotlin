@@ -1,22 +1,16 @@
 package com.sdk.growthbook.evaluators
 
-import com.sdk.growthbook.Utils.Constants
-import com.sdk.growthbook.Utils.GBUtils
-import com.sdk.growthbook.Utils.GBTrackingCallback
-import com.sdk.growthbook.Utils.toJsonElement
 import com.sdk.growthbook.model.GBExperiment
 import com.sdk.growthbook.model.GBExperimentResult
 import com.sdk.growthbook.model.GBFeature
 import com.sdk.growthbook.model.GBFeatureResult
 import com.sdk.growthbook.model.GBFeatureSource
 import com.sdk.growthbook.model.GBLocalContext
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.booleanOrNull
-import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.doubleOrNull
-import kotlinx.serialization.json.floatOrNull
-import kotlinx.serialization.json.intOrNull
-import kotlinx.serialization.json.longOrNull
+import com.sdk.growthbook.utils.Constants
+import com.sdk.growthbook.utils.GBTrackingCallback
+import com.sdk.growthbook.utils.GBUtils
+import com.sdk.growthbook.utils.convertToPrimitiveIfPossible
+import com.sdk.growthbook.utils.toJsonElement
 
 /**
  * Feature Evaluator Class
@@ -123,26 +117,12 @@ internal class GBFeatureEvaluator {
             .isEmpty() || value.toString() == "0"
 
         return GBFeatureResult(
-            value = convertToPrimitiveIfPossible(value),
+            value = value?.let { convertToPrimitiveIfPossible(it) },
             on = !isFalsy,
             off = isFalsy,
             source = source,
             experiment = experiment,
             experimentResult = experimentResult
         )
-    }
-
-    private fun convertToPrimitiveIfPossible(jsonElement: Any?): Any? {
-        return if (jsonElement is JsonPrimitive) {
-            jsonElement.intOrNull
-                ?: jsonElement.longOrNull
-                ?: jsonElement.doubleOrNull
-                ?: jsonElement.floatOrNull
-                ?: jsonElement.booleanOrNull
-                ?: jsonElement.contentOrNull
-                ?: jsonElement
-        } else {
-            jsonElement
-        }
     }
 }

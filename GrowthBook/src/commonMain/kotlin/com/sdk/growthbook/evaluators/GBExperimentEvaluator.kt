@@ -1,13 +1,14 @@
 package com.sdk.growthbook.evaluators
 
-import com.sdk.growthbook.Utils.Constants
-import com.sdk.growthbook.Utils.GBBucketRange
-import com.sdk.growthbook.Utils.GBTrackingCallback
-import com.sdk.growthbook.Utils.GBUtils
-import com.sdk.growthbook.Utils.toJsonElement
+import com.sdk.growthbook.utils.Constants
+import com.sdk.growthbook.utils.GBBucketRange
+import com.sdk.growthbook.utils.GBTrackingCallback
+import com.sdk.growthbook.utils.GBUtils
+import com.sdk.growthbook.utils.toJsonElement
 import com.sdk.growthbook.model.GBExperiment
 import com.sdk.growthbook.model.GBExperimentResult
 import com.sdk.growthbook.model.GBLocalContext
+import com.sdk.growthbook.utils.convertToPrimitiveIfPossible
 
 /**
  * Experiment Evaluator Class
@@ -92,7 +93,7 @@ internal class GBExperimentEvaluator {
             experiment.weights = GBUtils.getEqualWeights(experiment.variations.size)
         }
         // Default coverage to 1 (100%)
-        val coverage = experiment.coverage ?: 1.0f;
+        val coverage = experiment.coverage ?: 1.0f
         experiment.coverage = coverage
 
         // Calculate bucket ranges for the variations
@@ -173,14 +174,14 @@ internal class GBExperimentEvaluator {
         }
 
         // Hash Attribute - used for Experiment Calculations
-        val hashAttribute = experiment.hashAttribute ?: Constants.idAttributeKey;
+        val hashAttribute = experiment.hashAttribute ?: Constants.idAttributeKey
         // Hash Value against hash attribute
         val hashValue = attributes[hashAttribute] ?: ""
 
         return GBExperimentResult(
             inExperiment = inExperiment,
             variationId = targetVariationIndex,
-            value = targetValue,
+            value = convertToPrimitiveIfPossible(targetValue),
             hashAttribute = hashAttribute,
             hashValue = hashValue as? String
         )

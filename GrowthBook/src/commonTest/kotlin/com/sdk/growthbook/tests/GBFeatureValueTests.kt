@@ -1,88 +1,561 @@
 package com.sdk.growthbook.tests
 
 import com.sdk.growthbook.evaluators.GBFeatureEvaluator
-import com.sdk.growthbook.Utils.toHashMap
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.decodeFromJsonElement
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
-import kotlin.test.BeforeTest
+import com.sdk.growthbook.model.GBFeature
+import com.sdk.growthbook.model.GBFeatureResult
+import com.sdk.growthbook.model.GBFeatureSource
+import com.sdk.growthbook.model.GBLocalContext
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import org.intellij.lang.annotations.Language
 import kotlin.test.Test
-import kotlin.test.assertTrue
+import kotlin.test.assertEquals
 
 class GBFeatureValueTests {
 
-    lateinit var evalConditions : JsonArray
+    @Test
+    fun verifyResultValueNullFeatureNull() {
+        @Language("json")
+        val featureJson = """{}""".trimMargin()
 
-    @BeforeTest
-    fun setUp() {
-        evalConditions = GBTestHelper.getFeatureData()
-
+        assertEquals(null, getFeatureResult(featureJson).value)
     }
 
     @Test
-    fun testFeatures(){
-        var failedScenarios : ArrayList<String> = ArrayList()
-        var passedScenarios : ArrayList<String> = ArrayList()
-        for (item in evalConditions) {
-            if (item is JsonArray) {
-
-                val testData = GBTestHelper.jsonParser.decodeFromJsonElement<GBFeaturesTest>(item[1])
-
-                val attributes = testData.attributes.jsonObject.toHashMap()
-
-                val gbContext = GBContext("", hostURL = "",
-                    enabled = true, attributes = attributes, forcedVariations = HashMap(),
-                    qaMode = false, trackingCallback = { _, _ ->
-
-                    })
-                if (testData.features != null) {
-                    gbContext.features = testData.features
-                }
-
-
-                val evaluator = GBFeatureEvaluator()
-                val result = evaluator.evaluateFeature(gbContext, item[2].jsonPrimitive.content)
-
-                val expectedResult = GBTestHelper.jsonParser.decodeFromJsonElement<GBFeatureResultTest>(item[3])
-
-                val status = item[0].toString() +
-                        "\nExpected Result - " +
-                        "\nValue - " + expectedResult.value.toString() +
-                        "\nOn - " + expectedResult.on.toString() +
-                        "\nOff - " + expectedResult.off.toString() +
-                        "\nSource - " + expectedResult.source +
-                        "\nExperiment - " + expectedResult.experiment?.key +
-                        "\nExperiment Result - " + expectedResult.experimentResult?.variationId +
-                        "\nActual result - " +
-                        "\nValue - " + result.value.toString() +
-                        "\nOn - " + result.on.toString() +
-                        "\nOff - " + result.off.toString() +
-                        "\nSource - " + result.source +
-                        "\nExperiment - " + result.experiment?.key +
-                        "\nExperiment Result - " + result.experimentResult?.variationId + "\n\n"
-
-                if (result.value.toString() == expectedResult.value.content &&
-                    result.on.toString() == expectedResult.on.toString() &&
-                    result.off.toString() == expectedResult.off.toString() &&
-                    result.source.toString() == expectedResult.source &&
-                    result.experiment?.key == expectedResult.experiment?.key &&
-                    result.experimentResult?.variationId == expectedResult.experimentResult?.variationId ) {
-                    passedScenarios.add(status)
-                } else {
-                    failedScenarios.add(status)
-                }
-
+    fun verifyResultValueNullFeatureHasEmptyRule() {
+        @Language("json")
+        val featureJson = """{
+            "rules": [
+                  {}
+              ]
             }
+            """.trimMargin()
+
+        assertEquals(null, getFeatureResult(featureJson).value)
+    }
+
+    @Test
+    fun verifyUsesDefaultValueNumber() {
+        @Language("json")
+        val featureJson = """{
+          "defaultValue": 1
+        }""".trimMargin()
+
+        val result = getFeatureResult(featureJson)
+        assertEquals(1, result.value)
+        assertEquals(GBFeatureSource.defaultValue, result.source)
+    }
+
+    @Test
+    fun verifyUsesCustomValuesString() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": "yes"
+        }""".trimMargin()
+
+        val result = getFeatureResult(featureJson)
+        assertEquals("yes", result.value)
+        assertEquals(GBFeatureSource.defaultValue, result.source)
+    }
+
+    @Test
+    fun verifyForceRule() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 2,
+            "rules": [
+              {
+                "force": 1
+              }
+            ]
+          }
+        """.trimIndent()
+
+        val result = getFeatureResult(featureJson)
+        assertEquals(1, result.value)
+        assertEquals(GBFeatureSource.force, result.source)
+    }
+
+    @Test
+    fun verifyForceRuleCoverageIncluded() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 2,
+            "rules": [
+              {
+                "force": 1,
+                "coverage": 0.5
+              }
+            ]
+          }""".trimMargin()
+
+        val attributes = mapOf<String, Any>(
+            "id" to "3"
+        )
+
+        val result = getFeatureResult(featureJson, attributes)
+        assertEquals(1, result.value)
+        assertEquals(GBFeatureSource.force, result.source)
+    }
+
+    @Test
+    fun verifyForceRuleCoverageExcluded() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 2,
+            "rules": [
+              {
+                "force": 1,
+                "coverage": 0.5
+              }
+            ]
+          }""".trimMargin()
+
+        val attributes = mapOf<String, Any>(
+            "id" to "1"
+        )
+
+        val result = getFeatureResult(featureJson, attributes)
+        assertEquals(2, result.value)
+        assertEquals(GBFeatureSource.defaultValue, result.source)
+    }
+
+    @Test
+    fun verifyForceRuleCoverageMissingAttribute() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 2,
+            "rules": [
+              {
+                "force": 1,
+                "coverage": 0.5
+              }
+            ]
+          }""".trimMargin()
+
+        val result = getFeatureResult(featureJson, mapOf())
+        assertEquals(2, result.value)
+        assertEquals(GBFeatureSource.defaultValue, result.source)
+    }
+
+    @Test
+    fun verifyForceRuleConditionPass() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 2,
+            "rules": [
+              {
+                "force": 1,
+                "condition": {
+                  "country": {
+                    "${'$'}in": [
+                      "US",
+                      "CA"
+                    ]
+                  },
+                  "browser": "firefox"
+                }
+              }
+            ]
+          }""".trimMargin()
+
+        val attributes = mapOf<String, Any>(
+            "country" to "US",
+            "browser" to "firefox",
+        )
+
+        val result = getFeatureResult(featureJson, attributes)
+        assertEquals(1, result.value)
+        assertEquals(GBFeatureSource.force, result.source)
+    }
+
+    @Test
+    fun verifyForceRuleConditionFail() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 2,
+            "rules": [
+              {
+                "force": 1,
+                "condition": {
+                  "country": {
+                    "${'$'}in": [
+                      "US",
+                      "CA"
+                    ]
+                  },
+                  "browser": "firefox"
+                }
+              }
+            ]
+          }""".trimMargin()
+
+        val attributes = mapOf<String, Any>(
+            "country" to "US",
+            "browser" to "chrome",
+        )
+
+        val result = getFeatureResult(featureJson, attributes)
+        assertEquals(2, result.value)
+        assertEquals(GBFeatureSource.defaultValue, result.source)
+    }
+
+    @Test
+    fun verifyEmptyExperimentRuleC() {
+        @Language("json")
+        val featureJson = """{
+            "rules": [
+              {
+                "variations": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              }
+            ]
+        }""".trimIndent()
+
+        val attributes = mapOf<String, Any>(
+            "id" to "123"
+        )
+
+        val result = getFeatureResult(featureJson, attributes, "feature")
+        assertEquals("c", result.value)
+        assertEquals("c", result.experimentResult?.value)
+
+        assertEquals(GBFeatureSource.experiment, result.source)
+        assertEquals(2, result.experimentResult?.variationId)
+        assertEquals("id", result.experimentResult?.hashAttribute)
+        assertEquals("123", result.experimentResult?.hashValue)
+    }
+
+    @Test
+    fun verifyEmptyExperimentRuleB() {
+        @Language("json")
+        val featureJson = """{
+            "rules": [
+              {
+                "variations": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              }
+            ]
+        }""".trimIndent()
+
+        val attributes = mapOf<String, Any>(
+            "id" to "fds"
+        )
+
+        val result = getFeatureResult(featureJson, attributes, "feature")
+        assertEquals("b", result.value)
+        assertEquals("b", result.experimentResult?.value)
+
+        assertEquals(GBFeatureSource.experiment, result.source)
+        assertEquals(1, result.experimentResult?.variationId)
+        assertEquals("id", result.experimentResult?.hashAttribute)
+        assertEquals("fds", result.experimentResult?.hashValue)
+    }
+
+    @Test
+    fun verifyEmptyExperimentRuleA() {
+        @Language("json")
+        val featureJson = """{
+            "rules": [
+              {
+                "variations": [
+                  "a",
+                  "b",
+                  "c"
+                ]
+              }
+            ]
+        }""".trimIndent()
+
+        val attributes = mapOf<String, Any>(
+            "id" to "456"
+        )
+
+        val result = getFeatureResult(featureJson, attributes, "feature")
+        assertEquals("a", result.value)
+        assertEquals("a", result.experimentResult?.value)
+
+        assertEquals(GBFeatureSource.experiment, result.source)
+        assertEquals(0, result.experimentResult?.variationId)
+        assertEquals("id", result.experimentResult?.hashAttribute)
+        assertEquals("456", result.experimentResult?.hashValue)
+    }
+
+    @Test
+    fun createsExperimentsProperly() {
+        @Language("json")
+        val featureJson = """{
+            "rules": [
+              {
+                "coverage": 0.99,
+                "hashAttribute": "anonId",
+                "namespace": [
+                  "pricing",
+                  0,
+                  1
+                ],
+                "key": "hello",
+                "variations": [
+                  true,
+                  false
+                ],
+                "weights": [
+                  0.1,
+                  0.9
+                ],
+                "condition": {
+                  "premium": true
+                }
+              }
+            ]
+          }
+        """.trimMargin()
+
+        val attributes = mapOf<String, Any>(
+            "anonId" to "123",
+            "premium" to true
+        )
+
+        val result = getFeatureResult(featureJson, attributes)
+
+        assertEquals(false, result.value)
+        assertEquals(false, result.experimentResult?.value)
+        assertEquals("hello", result.experiment?.key)
+
+        assertEquals(GBFeatureSource.experiment, result.source)
+    }
+
+    @Test
+    fun verifyRuleOrdersSkipFirst() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 0,
+            "rules": [
+              {
+                "force": 1,
+                "condition": {
+                  "browser": "chrome"
+                }
+              },
+              {
+                "force": 2,
+                "condition": {
+                  "browser": "firefox"
+                }
+              },
+              {
+                "force": 3,
+                "condition": {
+                  "browser": "safari"
+                }
+              }
+            ]
         }
+        """.trimMargin()
 
-        print("\nTOTAL TESTS - "+ evalConditions.size)
-        print("\nPassed TESTS - "+ passedScenarios.size)
-        print("\nFailed TESTS - "+ failedScenarios.size)
-        print("\n")
-        print(failedScenarios)
+        val attributes = mapOf<String, Any>(
+            "browser" to "firefox"
+        )
 
-        assertTrue(failedScenarios.size == 0)
+        val result = getFeatureResult(featureJson, attributes)
 
+        assertEquals(2, result.value)
+        assertEquals(GBFeatureSource.force, result.source)
+    }
+
+    @Test
+    fun verifyRuleOrdersSkipTwoRules() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 0,
+            "rules": [
+              {
+                "force": 1,
+                "condition": {
+                  "browser": "chrome"
+                }
+              },
+              {
+                "force": 2,
+                "condition": {
+                  "browser": "firefox"
+                }
+              },
+              {
+                "force": 3,
+                "condition": {
+                  "browser": "safari"
+                }
+              }
+            ]
+        }
+        """.trimMargin()
+
+        val attributes = mapOf<String, Any>(
+            "browser" to "safari"
+        )
+
+        val result = getFeatureResult(featureJson, attributes)
+
+        assertEquals(3, result.value)
+        assertEquals(GBFeatureSource.force, result.source)
+    }
+
+    @Test
+    fun verifyRuleOrdersSkipAll() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 0,
+            "rules": [
+              {
+                "force": 1,
+                "condition": {
+                  "browser": "chrome"
+                }
+              },
+              {
+                "force": 2,
+                "condition": {
+                  "browser": "firefox"
+                }
+              },
+              {
+                "force": 3,
+                "condition": {
+                  "browser": "safari"
+                }
+              }
+            ]
+          }
+        """.trimMargin()
+
+        val attributes = mapOf<String, Any>(
+            "browser" to "no_browser"
+        )
+
+        val result = getFeatureResult(featureJson, attributes)
+
+        assertEquals(0, result.value)
+        assertEquals(GBFeatureSource.defaultValue, result.source)
+    }
+
+    @Test
+    fun skipExperimentBecauseCovereSmall() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 0,
+            "rules": [
+              {
+                "variations": [
+                  0,
+                  1,
+                  2,
+                  3
+                ],
+                "coverage": 0.01
+              },
+              {
+                "force": 3
+              }
+            ]
+          }
+        """.trimMargin()
+
+        val attributes = mapOf<String, Any>(
+            "id" to "123"
+        )
+
+        val result = getFeatureResult(featureJson, attributes)
+        assertEquals(3, result.value)
+        assertEquals(GBFeatureSource.force, result.source)
+    }
+
+    @Test
+    fun skipsExperimentOnNamespace() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 0,
+            "rules": [
+              {
+                "variations": [
+                  0,
+                  1,
+                  2,
+                  3
+                ],
+                "namespace": [
+                  "pricing",
+                  0,
+                  0.01
+                ]
+              },
+              {
+                "force": 4
+              }
+            ]
+          }
+        """.trimMargin()
+
+        val attributes = mapOf<String, Any>(
+            "id" to "123"
+        )
+
+        val result = getFeatureResult(featureJson, attributes, "feature")
+
+        assertEquals(4, result.value)
+        assertEquals(GBFeatureSource.force, result.source)
+    }
+
+    @Test
+    fun skipExperimentMissingHashAttribute() {
+        @Language("json")
+        val featureJson = """{
+            "defaultValue": 0,
+            "rules": [
+              {
+                "variations": [
+                  0,
+                  1,
+                  2,
+                  3
+                ],
+                "hashAttribute": "company"
+              },
+              {
+                "force": 4
+              }
+            ]
+          }
+        """.trimMargin()
+
+        val attributes = mapOf<String, Any>(
+            "id" to "123"
+        )
+
+        val result = getFeatureResult(featureJson, attributes, "feature")
+
+        assertEquals(4, result.value)
+        assertEquals(GBFeatureSource.force, result.source)
+    }
+
+    private fun getFeatureResult(
+        featureJson: String,
+        attributes: Map<String, Any> = mapOf(),
+        key: String = "key"
+    ): GBFeatureResult {
+        val evaluator = GBFeatureEvaluator()
+        val feature: GBFeature = Json.decodeFromString(featureJson)
+
+        return evaluator.evaluateFeature(
+            feature,
+            key,
+            GBLocalContext(true, attributes, mapOf(), false)
+        ) { _, _ -> }
     }
 }

@@ -1,6 +1,6 @@
 package com.sdk.growthbook.tests
 
-import com.sdk.growthbook.Utils.toHashMap
+import com.sdk.growthbook.utils.toHashMap
 import com.sdk.growthbook.evaluators.GBExperimentEvaluator
 import com.sdk.growthbook.model.GBExperiment
 import com.sdk.growthbook.model.GBLocalContext
@@ -42,7 +42,7 @@ class GBExperimentRunTests {
                 )
 
                 val evaluator = GBExperimentEvaluator()
-                val result = evaluator.evaluateExperiment(gbContext, experiment)
+                val result = evaluator.evaluateExperiment(gbContext, experiment) { _, _ -> }
 
                 val status =
                     item[0].toString() + "\nExpected Result - " + item[3] + " & " + item[4] + "\nActual result - " + result.value.toString() + " & " + result.inExperiment + "\n\n"

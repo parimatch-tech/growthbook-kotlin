@@ -1,6 +1,6 @@
 package com.sdk.growthbook.local
 
-import com.sdk.growthbook.Utils.GBTrackingCallback
+import com.sdk.growthbook.utils.GBTrackingCallback
 import com.sdk.growthbook.evaluators.GBFeatureEvaluator
 import com.sdk.growthbook.model.FeaturesDataModel
 import com.sdk.growthbook.model.GBFeatureResult
