@@ -7,6 +7,7 @@ plugins {
     id("maven-publish")
     id("signing")
     id("org.jetbrains.dokka") version "1.4.20"
+    id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
 }
 
 group = "io.growthbook.sdk"
@@ -100,6 +101,15 @@ kotlin {
             iosArm64Test.dependsOn(this)
             iosSimulatorArm64Test.dependsOn(this)
         }
+    }
+
+    multiplatformSwiftPackage {
+        packageName("GrowthBookLight")
+        swiftToolsVersion("5.3")
+        targetPlatforms {
+            iOS { v("12") }
+        }
+        outputDirectory(File(rootDir, "/"))
     }
 
 }

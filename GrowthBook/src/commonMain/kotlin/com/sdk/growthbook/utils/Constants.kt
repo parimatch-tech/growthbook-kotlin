@@ -15,7 +15,7 @@ internal class Constants {
         /**
          * ID Attribute Key
          */
-        val idAttributeKey = "id"
+        const val idAttributeKey = "id"
     }
 }
 
