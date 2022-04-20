@@ -16,13 +16,7 @@ jobs:
         run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
 
       - name: Write value to Properties-file
-        uses: christian-draeger/write-properties@master
-        with:
-          path: 'gradle.properties'
-          property: |
-            'version'
-          value: |
-            ${{ steps.get_version.outputs.VERSION }}
+        run: sed -ir "s/^[#]*\s*version=.*/version=${{ steps.get_version.outputs.VERSION }}/" gradle.properties
 
       - name: Test
         run: cat gradle.properties
