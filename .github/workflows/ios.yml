@@ -7,9 +7,26 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+
+      - name: Write value to Properties-file
+        uses: christian-draeger/write-properties@1.0.2
+        with:
+          path: 'gradle.properties'
+          property: |
+            'version'
+          value: |
+            ${{ steps.get_version.outputs.VERSION }}
+
+      - name: Test
+        run: cat gradle.properties
+
       - uses: actions/setup-java@v2
         with:
           distribution: temurin
