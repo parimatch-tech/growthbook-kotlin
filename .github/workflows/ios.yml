@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     tags:
-      - 'v'
+      - 'v*'
 
 jobs:
   build:
@@ -44,4 +44,4 @@ jobs:
         with:
           files: GrowthBook.zip
 
-      uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v4
