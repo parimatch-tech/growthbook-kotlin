@@ -15,7 +15,7 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "GrowthBookLight",
-            path: "./GrowthBookLight.xcframework"
+            url: "https://github.com/parimatch-tech/growthbook-kotlin/raw/Poc/RemoveNetworkLayer/GrowthBookLight.xcframework.zip"
         ),
     ]
 )
