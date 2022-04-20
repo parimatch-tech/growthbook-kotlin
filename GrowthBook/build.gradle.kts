@@ -85,9 +85,9 @@ kotlin {
             iOS { v("12") }
         }
         outputDirectory(File(rootDir, "/"))
-        distributionMode { remote("https://github.com/parimatch-tech/growthbook-kotlin/archive/refs/tags/") }
+        distributionMode { remote("https://github.com/parimatch-tech/growthbook-kotlin/releases/download/${version}/") }
+        zipFileName("GrowthBook")
     }
-
 }
 
 android {

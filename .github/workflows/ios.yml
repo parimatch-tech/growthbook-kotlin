@@ -42,4 +42,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: GrowthBook-1.2.0.zip
+          files: GrowthBook.zip
+
+      uses: stefanzweifel/git-auto-commit-action@v4
