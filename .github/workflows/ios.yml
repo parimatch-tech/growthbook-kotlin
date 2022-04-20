@@ -38,9 +38,7 @@ jobs:
         with:
           files: GrowthBook.zip
 
-      - name: Commit a new version
-        uses: devops-infra/action-commit-push@master
+      - name: Commit & Push changes
+        uses: actions-js/push@master
         with:
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
-          commit_prefix: "[AUTO]"
-          commit_message: "Update the package version"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
