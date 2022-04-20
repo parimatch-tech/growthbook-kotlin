@@ -35,20 +35,6 @@ kotlin {
         }
     }
 
-    watchos {
-        binaries.framework {
-            baseName = iOSBinaryName
-            xcf.add(this)
-        }
-    }
-
-    tvos {
-        binaries.framework {
-            baseName = iOSBinaryName
-            xcf.add(this)
-        }
-    }
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -69,27 +55,16 @@ kotlin {
                 )
             }
         }
-        val androidMain by getting
-        val androidTest by getting
 
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
-
-        val tvosMain by getting
-
-        val watchosMain by getting
 
         val iosMain by creating {
             dependsOn(commonMain)
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
-
-            tvosMain.dependsOn(this)
-
-            watchosMain.dependsOn(this)
-
         }
         val iosX64Test by getting
         val iosArm64Test by getting
@@ -104,12 +79,13 @@ kotlin {
     }
 
     multiplatformSwiftPackage {
-        packageName("GrowthBookLight")
+        packageName("GrowthBook")
         swiftToolsVersion("5.3")
         targetPlatforms {
             iOS { v("12") }
         }
         outputDirectory(File(rootDir, "/"))
+        distributionMode { remote("https://github.com/parimatch-tech/growthbook-kotlin/archive/refs/tags/") }
     }
 
 }
