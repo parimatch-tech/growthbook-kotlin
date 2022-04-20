@@ -38,4 +38,9 @@ jobs:
         with:
           files: GrowthBook.zip
 
-      - uses: EndBug/add-and-commit@v9
+      - name: Commit a new version
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          commit_prefix: "[AUTO]"
+          commit_message: "Update the package version"
