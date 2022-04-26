@@ -111,14 +111,9 @@ internal class GBConditionEvaluator {
                 return !evalCondition(attributes, targetItem)
             }
 
-            var isAttributeFound = false
-
             // Loop through the conditionObj key/value pairs
             for (key in conditionObj.jsonObject.keys) {
                 val element = getPath(attributes, key)
-                if (element != null) {
-                    isAttributeFound = true
-                }
                 val value = conditionObj.jsonObject[key]
                 if (value != null) {
                     // If evalConditionValue(value, getPath(attributes, key)) is false, break out of loop and return false
@@ -127,9 +122,10 @@ internal class GBConditionEvaluator {
                     }
                 }
             }
-
-            return isAttributeFound
         }
+
+        // Return true
+        return true
     }
 
     /**
