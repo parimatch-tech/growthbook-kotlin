@@ -84,9 +84,10 @@ kotlin {
         targetPlatforms {
             iOS { v("12") }
         }
-        outputDirectory(File(rootDir, "/"))
+        outputDirectory(File(rootDir, "/swiftpackage"))
         distributionMode { remote("https://github.com/parimatch-tech/growthbook-kotlin/releases/download/${version}/") }
         zipFileName("GrowthBook")
+        buildConfiguration { release() }
     }
 }
 

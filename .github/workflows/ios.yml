@@ -32,11 +32,14 @@ jobs:
       - name: Execute Gradle build
         run: ./gradlew createSwiftPackage
 
+      - name: Copy Package.swift to root
+        run: cp swiftpackage/Package.swift Package.swift
+
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: GrowthBook.zip
+          files: swiftpackage/GrowthBook.zip
 
       - name: Commit & Push changes
         uses: actions-js/push@master
