@@ -262,6 +262,10 @@ internal class GBConditionEvaluator {
             return conditionValue.content == attributeValue.content
         }
 
+        if (conditionValue is JsonPrimitive && attributeValue == null) {
+            return false
+        }
+
         // If conditionValue is array, return true if it's "equal" - "equal" should do a deep comparison for arrays.
         if (conditionValue is JsonArray) {
 

@@ -8,7 +8,7 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 
 /**
-  * Fowler-Noll-Vo hash - 32 bit
+ * Fowler-Noll-Vo hash - 32 bit
  */
 internal class FNV {
 
@@ -28,7 +28,6 @@ internal class FNV {
         }
         return hash
     }
-
 }
 
 /**
@@ -48,7 +47,7 @@ internal class GBUtils {
          * Hashes a string to a float between 0 and 1
          * fnv32a returns an integer, so we convert that to a float using a modulus:
          */
-        fun hash(data: String) : Float? {
+        fun hash(data: String): Float? {
             val hash = FNV().fnv1a_32(data)
             val remainder = hash?.remainder(BigInteger(1000))
             val value = remainder?.toString()?.toFloatOrNull()?.div(1000f)
@@ -73,10 +72,10 @@ internal class GBUtils {
          * Returns an array of floats with numVariations items that are all equal and sum to 1. For example, getEqualWeights(2) would return [0.5, 0.5].
          */
         fun getEqualWeights(numVariations: Int): List<Float> {
-            var weights : List<Float> = ArrayList()
+            var weights: List<Float> = ArrayList()
 
             if (numVariations >= 1) {
-                weights = List(numVariations){1.0f / (numVariations)}
+                weights = List(numVariations) { 1.0f / (numVariations) }
             }
 
             return weights
@@ -85,15 +84,18 @@ internal class GBUtils {
         /**
          * This converts and experiment's coverage and variation weights into an array of bucket ranges.
          */
-        fun getBucketRanges(numVariations: Int, coverage: Float, weights: List<Float>): List<GBBucketRange> {
-            var bucketRange : List<GBBucketRange>
+        fun getBucketRanges(
+            numVariations: Int,
+            coverage: Float,
+            weights: List<Float>
+        ): List<GBBucketRange> {
+            var bucketRange: List<GBBucketRange>
 
             var targetCoverage = coverage
 
             // Clamp the value of coverage to between 0 and 1 inclusive.
             if (coverage < 0) targetCoverage = 0F
             if (coverage > 1) targetCoverage = 1F
-
 
             // Default to equal weights if the weights don't match the number of variations.
             var targetWeights = weights
@@ -128,7 +130,7 @@ internal class GBUtils {
         /**
          * Choose Variation from List of ranges which matches particular number
          */
-        fun chooseVariation(n: Float, ranges: List<GBBucketRange>) : Int {
+        fun chooseVariation(n: Float, ranges: List<GBBucketRange>): Int {
 
             var counter = 0
             for (range in ranges) {
@@ -144,7 +146,7 @@ internal class GBUtils {
         /**
          * Convert JsonArray to GBNameSpace
          */
-        fun getGBNameSpace(namespace: JsonArray) : GBNameSpace? {
+        fun getGBNameSpace(namespace: JsonArray): GBNameSpace? {
 
             if (namespace.size >= 3) {
                 val title = namespace[0].jsonPrimitive.content
@@ -154,11 +156,9 @@ internal class GBUtils {
                 if (start != null && end != null) {
                     return GBNameSpace(title, start, end)
                 }
-
             }
 
             return null
         }
-
     }
 }

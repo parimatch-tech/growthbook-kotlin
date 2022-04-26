@@ -46,7 +46,7 @@ class GBTestHelper {
 }
 
 @Serializable
-class GBContextTest (
+class GBContextTest(
     val attributes: JsonElement = JsonObject(HashMap()),
     val qaMode: Boolean = false,
     val enabled: Boolean = true,

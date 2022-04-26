@@ -12,7 +12,7 @@ import kotlin.test.assertTrue
 
 class GBConditionTests {
 
-    lateinit var evalConditions : JsonArray
+    lateinit var evalConditions: JsonArray
 
     @BeforeTest
     fun setUp() {
@@ -20,15 +20,16 @@ class GBConditionTests {
     }
 
     @Test
-    fun testConditions(){
-        var failedScenarios : ArrayList<String> = ArrayList()
-        var passedScenarios : ArrayList<String> = ArrayList()
+    fun testConditions() {
+        var failedScenarios: ArrayList<String> = ArrayList()
+        var passedScenarios: ArrayList<String> = ArrayList()
         for (item in evalConditions) {
             if (item is JsonArray) {
                 val evaluator = GBConditionEvaluator()
                 val result = evaluator.evalCondition(item[2], item[1])
 
-                val status = item[0].toString() + "\nExpected Result - " +item[3] + "\nActual result - " + result+"\n\n"
+                val status =
+                    item[0].toString() + "\nExpected Result - " + item[3] + "\nActual result - " + result + "\n\n"
 
                 if (item[3].toString() == result.toString()) {
                     passedScenarios.add(status)
@@ -38,9 +39,9 @@ class GBConditionTests {
             }
         }
 
-        print("\nTOTAL TESTS - "+ evalConditions.size)
-        print("\nPassed TESTS - "+ passedScenarios.size)
-        print("\nFailed TESTS - "+ failedScenarios.size)
+        print("\nTOTAL TESTS - " + evalConditions.size)
+        print("\nPassed TESTS - " + passedScenarios.size)
+        print("\nFailed TESTS - " + failedScenarios.size)
         print("\n")
         print(failedScenarios)
 
@@ -48,7 +49,7 @@ class GBConditionTests {
     }
 
     @Test
-    fun testInValidConditionObj(){
+    fun testInValidConditionObj() {
         val evaluator = GBConditionEvaluator()
         assertFalse(evaluator.evalCondition(JsonObject(HashMap()), JsonArray(ArrayList())))
 
@@ -60,8 +61,20 @@ class GBConditionTests {
 
         assertTrue(evaluator.evalConditionValue(JsonObject(HashMap()), null) == false)
 
-        assertTrue(evaluator.evalOperatorCondition("${"$"}lte", JsonPrimitive("abc"), JsonPrimitive("abc")))
+        assertTrue(
+            evaluator.evalOperatorCondition(
+                "${"$"}lte",
+                JsonPrimitive("abc"),
+                JsonPrimitive("abc")
+            )
+        )
 
-        assertTrue(evaluator.evalOperatorCondition("${"$"}gte", JsonPrimitive("abc"), JsonPrimitive("abc")))
+        assertTrue(
+            evaluator.evalOperatorCondition(
+                "${"$"}gte",
+                JsonPrimitive("abc"),
+                JsonPrimitive("abc")
+            )
+        )
     }
 }

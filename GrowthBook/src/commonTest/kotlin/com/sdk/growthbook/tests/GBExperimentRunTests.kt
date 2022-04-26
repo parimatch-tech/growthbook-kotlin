@@ -1,9 +1,9 @@
 package com.sdk.growthbook.tests
 
-import com.sdk.growthbook.utils.toHashMap
 import com.sdk.growthbook.evaluators.GBExperimentEvaluator
 import com.sdk.growthbook.model.GBExperiment
 import com.sdk.growthbook.model.GBLocalContext
+import com.sdk.growthbook.utils.toHashMap
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonObject

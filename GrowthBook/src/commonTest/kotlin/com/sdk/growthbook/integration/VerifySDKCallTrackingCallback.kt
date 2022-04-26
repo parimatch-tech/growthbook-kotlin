@@ -1,8 +1,8 @@
 package com.sdk.growthbook.integration
 
-import com.sdk.growthbook.utils.GBTrackingCallback
 import com.sdk.growthbook.local.GrowthBookLocalSDK
 import com.sdk.growthbook.model.GBLocalContext
+import com.sdk.growthbook.utils.GBTrackingCallback
 import org.intellij.lang.annotations.Language
 import org.junit.Test
 import kotlin.test.assertFalse

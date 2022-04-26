@@ -1,14 +1,14 @@
 package com.sdk.growthbook.evaluators
 
+import com.sdk.growthbook.model.GBExperiment
+import com.sdk.growthbook.model.GBExperimentResult
+import com.sdk.growthbook.model.GBLocalContext
 import com.sdk.growthbook.utils.Constants
 import com.sdk.growthbook.utils.GBBucketRange
 import com.sdk.growthbook.utils.GBTrackingCallback
 import com.sdk.growthbook.utils.GBUtils
-import com.sdk.growthbook.utils.toJsonElement
-import com.sdk.growthbook.model.GBExperiment
-import com.sdk.growthbook.model.GBExperimentResult
-import com.sdk.growthbook.model.GBLocalContext
 import com.sdk.growthbook.utils.convertToPrimitiveIfPossible
+import com.sdk.growthbook.utils.toJsonElement
 
 /**
  * Experiment Evaluator Class

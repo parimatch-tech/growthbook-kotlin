@@ -1,10 +1,10 @@
 package com.sdk.growthbook.local
 
-import com.sdk.growthbook.utils.GBTrackingCallback
 import com.sdk.growthbook.evaluators.GBFeatureEvaluator
 import com.sdk.growthbook.model.FeaturesDataModel
 import com.sdk.growthbook.model.GBFeatureResult
 import com.sdk.growthbook.model.GBLocalContext
+import com.sdk.growthbook.utils.GBTrackingCallback
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
