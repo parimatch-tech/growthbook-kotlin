@@ -13,4 +13,4 @@ kotlin.native.enableDependencyPropagation=false
 kotlin.mpp.enableCInteropCommonization=true
 
 #Version
-version=0.1
+version=0.3
