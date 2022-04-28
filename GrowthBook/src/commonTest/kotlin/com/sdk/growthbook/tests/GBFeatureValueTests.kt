@@ -7,7 +7,6 @@ import com.sdk.growthbook.model.GBFeatureSource
 import com.sdk.growthbook.model.GBLocalContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import org.intellij.lang.annotations.Language
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -15,7 +14,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyResultValueNullFeatureNull() {
-        @Language("json")
         val featureJson = """{}""".trimMargin()
 
         assertEquals(null, getFeatureResult(featureJson).value)
@@ -23,7 +21,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyResultValueNullFeatureHasEmptyRule() {
-        @Language("json")
         val featureJson = """{
             "rules": [
                   {}
@@ -36,7 +33,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyUsesDefaultValueNumber() {
-        @Language("json")
         val featureJson = """{
           "defaultValue": 1
         }""".trimMargin()
@@ -48,7 +44,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyUsesCustomValuesString() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": "yes"
         }""".trimMargin()
@@ -60,7 +55,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyForceRule() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 2,
             "rules": [
@@ -78,7 +72,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyForceRuleCoverageIncluded() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 2,
             "rules": [
@@ -100,7 +93,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyForceRuleCoverageExcluded() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 2,
             "rules": [
@@ -122,7 +114,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyForceRuleCoverageMissingAttribute() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 2,
             "rules": [
@@ -140,7 +131,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyForceRuleConditionPass() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 2,
             "rules": [
@@ -171,7 +161,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyForceRuleConditionFail() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 2,
             "rules": [
@@ -202,7 +191,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyEmptyExperimentRuleC() {
-        @Language("json")
         val featureJson = """{
             "rules": [
               {
@@ -231,7 +219,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyEmptyExperimentRuleB() {
-        @Language("json")
         val featureJson = """{
             "rules": [
               {
@@ -260,7 +247,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyEmptyExperimentRuleA() {
-        @Language("json")
         val featureJson = """{
             "rules": [
               {
@@ -289,7 +275,6 @@ class GBFeatureValueTests {
 
     @Test
     fun createsExperimentsProperly() {
-        @Language("json")
         val featureJson = """{
             "rules": [
               {
@@ -333,7 +318,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyRuleOrdersSkipFirst() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 0,
             "rules": [
@@ -371,7 +355,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyRuleOrdersSkipTwoRules() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 0,
             "rules": [
@@ -409,7 +392,6 @@ class GBFeatureValueTests {
 
     @Test
     fun verifyRuleOrdersSkipAll() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 0,
             "rules": [
@@ -447,7 +429,6 @@ class GBFeatureValueTests {
 
     @Test
     fun skipExperimentBecauseCovereSmall() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 0,
             "rules": [
@@ -478,7 +459,6 @@ class GBFeatureValueTests {
 
     @Test
     fun skipsExperimentOnNamespace() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 0,
             "rules": [
@@ -514,7 +494,6 @@ class GBFeatureValueTests {
 
     @Test
     fun skipExperimentMissingHashAttribute() {
-        @Language("json")
         val featureJson = """{
             "defaultValue": 0,
             "rules": [

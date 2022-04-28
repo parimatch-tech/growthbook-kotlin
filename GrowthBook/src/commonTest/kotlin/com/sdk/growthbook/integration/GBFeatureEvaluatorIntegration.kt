@@ -5,7 +5,6 @@ import com.sdk.growthbook.model.GBFeatureResult
 import com.sdk.growthbook.model.GBLocalContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import org.intellij.lang.annotations.Language
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -13,7 +12,6 @@ internal class GBFeatureEvaluatorIntegration {
 
     @Test
     fun verifyDefaultValue() {
-        @Language("json")
         val json = """
                 {
                   "defaultValue": true
@@ -25,7 +23,6 @@ internal class GBFeatureEvaluatorIntegration {
 
     @Test
     fun verifyValueByForceAttributeFirstCondition() {
-        @Language("json")
         val json = """
                 {
                   "defaultValue": "Default value",
@@ -58,7 +55,6 @@ internal class GBFeatureEvaluatorIntegration {
 
     @Test
     fun verifyValueByForceAttributeSecondCondition() {
-        @Language("json")
         val json = """
                 {
                   "defaultValue": "Default value",
@@ -91,7 +87,6 @@ internal class GBFeatureEvaluatorIntegration {
 
     @Test
     fun verifyValueByForceAttributeTwoCondition() {
-        @Language("json")
         val json = """
                 {
                   "defaultValue": "Default value",
@@ -124,7 +119,7 @@ internal class GBFeatureEvaluatorIntegration {
     }
 
     private fun buildFeature(
-        @Language("json") json: String,
+        json: String,
         attributes: Map<String, Any>,
     ): GBFeatureResult {
         val context = GBLocalContext(

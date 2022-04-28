@@ -2,13 +2,11 @@ package com.sdk.growthbook.integration
 
 import com.sdk.growthbook.local.GrowthBookLocalSDK
 import com.sdk.growthbook.model.GBLocalContext
-import org.intellij.lang.annotations.Language
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class VerifySDKReturnFeatureValues {
 
-    @Language("json")
     val json = """
             {
               "status": 200,

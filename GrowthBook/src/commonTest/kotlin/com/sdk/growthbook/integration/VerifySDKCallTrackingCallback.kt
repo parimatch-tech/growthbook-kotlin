@@ -3,8 +3,7 @@ package com.sdk.growthbook.integration
 import com.sdk.growthbook.local.GrowthBookLocalSDK
 import com.sdk.growthbook.model.GBLocalContext
 import com.sdk.growthbook.utils.GBTrackingCallback
-import org.intellij.lang.annotations.Language
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -12,7 +11,6 @@ internal class VerifySDKCallTrackingCallback {
 
     @Test
     fun verifyTrackingCallbackNotTriggerLocalSDK() {
-        @Language("json")
         val json = """
             {
               "status": 200,
@@ -38,7 +36,6 @@ internal class VerifySDKCallTrackingCallback {
 
     @Test
     fun verifyTrackingCallbackTriggerLocalSDK() {
-        @Language("json")
         val json = """
             {
               "status": 200,

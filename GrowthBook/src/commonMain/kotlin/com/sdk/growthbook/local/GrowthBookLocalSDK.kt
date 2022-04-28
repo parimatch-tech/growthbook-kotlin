@@ -8,8 +8,8 @@ import com.sdk.growthbook.utils.GBTrackingCallback
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-class GrowthBookLocalSDK(
-    private val localContext: GBLocalContext,
+class GrowthBookLocalSDK constructor(
+    private var localContext: GBLocalContext,
     private val growthBookFeatures: String,
     private val trackingCallback: GBTrackingCallback = { _, _ -> }
 ) {
@@ -20,6 +20,10 @@ class GrowthBookLocalSDK(
         Json {
             prettyPrint = true; isLenient = true; ignoreUnknownKeys = true
         }
+    }
+
+    fun updateContext(localContext: GBLocalContext) {
+        this.localContext = localContext
     }
 
     fun feature(featureKey: String): GBFeatureResult? {
