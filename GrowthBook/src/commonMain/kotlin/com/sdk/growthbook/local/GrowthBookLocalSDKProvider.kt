@@ -3,7 +3,6 @@ package com.sdk.growthbook.local
 import com.sdk.growthbook.model.GBFeatureResult
 import com.sdk.growthbook.model.GBLocalContext
 import com.sdk.growthbook.utils.GBTrackingCallback
-import kotlin.native.concurrent.SharedImmutable
 import kotlin.native.concurrent.ThreadLocal
 
 @ThreadLocal
