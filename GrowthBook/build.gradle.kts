@@ -39,10 +39,9 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
-                implementation(
-                    "org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion"
-                )
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
                 implementation("com.ionspin.kotlin:bignum:0.3.3")
+                implementation("co.touchlab:stately-concurrency:1.2.0")
             }
         }
         val commonTest by getting {
@@ -80,7 +79,7 @@ kotlin {
 
     multiplatformSwiftPackage {
         packageName("GrowthBook")
-        swiftToolsVersion("5.3")
+        swiftToolsVersion("5.5")
         targetPlatforms {
             iOS { v("12") }
         }
