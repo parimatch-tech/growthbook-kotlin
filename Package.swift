@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 import PackageDescription
 
 let package = Package(
@@ -15,8 +15,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "GrowthBook",
-            url: "https://github.com/parimatch-tech/growthbook-kotlin/releases/download/0.8/GrowthBook.zip",
-            checksum: "caf1ffbba7bcc95e9eed02ad3fccb19c4d9d8b03e00e9d4519d617f1197a34c1"
+            url: "https://github.com/parimatch-tech/growthbook-kotlin/releases/download/0.9/GrowthBook.zip",
+            checksum: "b3e24aa6ec1f83f4f3980ad1fe0046978491eff202fc748c6b417393fb066c13"
         ),
     ]
 )

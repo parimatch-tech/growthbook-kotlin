@@ -16,4 +16,4 @@ kotlin.mpp.enableCInteropCommonization=true
 #kotlin.native.binary.freezing=disabled
 
 #Version
-version=0.9
+version=0.7
