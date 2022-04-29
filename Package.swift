@@ -15,8 +15,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "GrowthBook",
-            url: "https://github.com/parimatch-tech/growthbook-kotlin/releases/download/0.7/GrowthBook.zip",
-            checksum: "3691a55bdee1443d44599a74aa911da10a8231120e7d40c2c0a8e45f44af6f2f"
+            url: "https://github.com/parimatch-tech/growthbook-kotlin/releases/download/0.8/GrowthBook.zip",
+            checksum: "caf1ffbba7bcc95e9eed02ad3fccb19c4d9d8b03e00e9d4519d617f1197a34c1"
         ),
     ]
 )
