@@ -38,7 +38,7 @@ class GBFeatureValueTests {
         }""".trimMargin()
 
         val result = getFeatureResult(featureJson)
-        assertEquals(1, result.value)
+        assertEquals("1", result.value)
         assertEquals(GBFeatureSource.defaultValue, result.source)
     }
 
@@ -66,7 +66,7 @@ class GBFeatureValueTests {
         """.trimIndent()
 
         val result = getFeatureResult(featureJson)
-        assertEquals(1, result.value)
+        assertEquals("1", result.value)
         assertEquals(GBFeatureSource.force, result.source)
     }
 
@@ -87,7 +87,7 @@ class GBFeatureValueTests {
         )
 
         val result = getFeatureResult(featureJson, attributes)
-        assertEquals(1, result.value)
+        assertEquals("1", result.value)
         assertEquals(GBFeatureSource.force, result.source)
     }
 
@@ -108,7 +108,7 @@ class GBFeatureValueTests {
         )
 
         val result = getFeatureResult(featureJson, attributes)
-        assertEquals(2, result.value)
+        assertEquals("2", result.value)
         assertEquals(GBFeatureSource.defaultValue, result.source)
     }
 
@@ -125,7 +125,7 @@ class GBFeatureValueTests {
           }""".trimMargin()
 
         val result = getFeatureResult(featureJson, mapOf())
-        assertEquals(2, result.value)
+        assertEquals("2", result.value)
         assertEquals(GBFeatureSource.defaultValue, result.source)
     }
 
@@ -155,7 +155,7 @@ class GBFeatureValueTests {
         )
 
         val result = getFeatureResult(featureJson, attributes)
-        assertEquals(1, result.value)
+        assertEquals("1", result.value)
         assertEquals(GBFeatureSource.force, result.source)
     }
 
@@ -185,7 +185,7 @@ class GBFeatureValueTests {
         )
 
         val result = getFeatureResult(featureJson, attributes)
-        assertEquals(2, result.value)
+        assertEquals("2", result.value)
         assertEquals(GBFeatureSource.defaultValue, result.source)
     }
 
@@ -309,7 +309,7 @@ class GBFeatureValueTests {
 
         val result = getFeatureResult(featureJson, attributes)
 
-        assertEquals(false, result.value)
+        assertEquals("false", result.value)
         assertEquals(false, result.experimentResult?.value)
         assertEquals("hello", result.experiment?.key)
 
@@ -349,7 +349,7 @@ class GBFeatureValueTests {
 
         val result = getFeatureResult(featureJson, attributes)
 
-        assertEquals(2, result.value)
+        assertEquals("2", result.value)
         assertEquals(GBFeatureSource.force, result.source)
     }
 
@@ -386,7 +386,7 @@ class GBFeatureValueTests {
 
         val result = getFeatureResult(featureJson, attributes)
 
-        assertEquals(3, result.value)
+        assertEquals("3", result.value)
         assertEquals(GBFeatureSource.force, result.source)
     }
 
@@ -423,7 +423,7 @@ class GBFeatureValueTests {
 
         val result = getFeatureResult(featureJson, attributes)
 
-        assertEquals(0, result.value)
+        assertEquals("0", result.value)
         assertEquals(GBFeatureSource.defaultValue, result.source)
     }
 
@@ -453,7 +453,7 @@ class GBFeatureValueTests {
         )
 
         val result = getFeatureResult(featureJson, attributes)
-        assertEquals(3, result.value)
+        assertEquals("3", result.value)
         assertEquals(GBFeatureSource.force, result.source)
     }
 
@@ -488,7 +488,7 @@ class GBFeatureValueTests {
 
         val result = getFeatureResult(featureJson, attributes, "feature")
 
-        assertEquals(4, result.value)
+        assertEquals("4", result.value)
         assertEquals(GBFeatureSource.force, result.source)
     }
 
@@ -519,7 +519,7 @@ class GBFeatureValueTests {
 
         val result = getFeatureResult(featureJson, attributes, "feature")
 
-        assertEquals(4, result.value)
+        assertEquals("4", result.value)
         assertEquals(GBFeatureSource.force, result.source)
     }
 

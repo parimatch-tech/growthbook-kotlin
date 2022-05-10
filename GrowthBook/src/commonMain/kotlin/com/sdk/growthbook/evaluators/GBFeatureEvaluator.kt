@@ -9,8 +9,8 @@ import com.sdk.growthbook.model.GBLocalContext
 import com.sdk.growthbook.utils.Constants
 import com.sdk.growthbook.utils.GBTrackingCallback
 import com.sdk.growthbook.utils.GBUtils
-import com.sdk.growthbook.utils.convertToPrimitiveIfPossible
 import com.sdk.growthbook.utils.toJsonElement
+import kotlinx.serialization.json.JsonPrimitive
 
 /**
  * Feature Evaluator Class
@@ -112,17 +112,16 @@ internal class GBFeatureEvaluator {
         experiment: GBExperiment? = null,
         experimentResult: GBExperimentResult? = null
     ): GBFeatureResult {
-
-        val isFalsy = value == null || value.toString() == "false" || value.toString()
-            .isEmpty() || value.toString() == "0"
-
         return GBFeatureResult(
-            value = value?.let { convertToPrimitiveIfPossible(it) },
-            on = !isFalsy,
-            off = isFalsy,
+            value = convert(value),
             source = source,
             experiment = experiment,
             experimentResult = experimentResult
         )
+    }
+
+    private fun convert(value: Any?): String? {
+        val safeValue = value ?: return null
+        return (safeValue as? JsonPrimitive)?.content ?: safeValue.toString()
     }
 }

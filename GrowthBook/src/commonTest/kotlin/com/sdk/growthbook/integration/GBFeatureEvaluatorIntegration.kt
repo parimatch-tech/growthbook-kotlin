@@ -18,7 +18,7 @@ internal class GBFeatureEvaluatorIntegration {
                 }
                 """.trimMargin()
 
-        assertEquals(true, buildFeature(json, mapOf()).value)
+        assertEquals("true", buildFeature(json, mapOf()).value)
     }
 
     @Test

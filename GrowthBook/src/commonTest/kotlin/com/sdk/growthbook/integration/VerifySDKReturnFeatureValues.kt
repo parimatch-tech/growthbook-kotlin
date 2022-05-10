@@ -42,12 +42,12 @@ internal class VerifySDKReturnFeatureValues {
             json
         )
 
-        assertEquals(true, sdk.feature("bool_feature_true")?.value)
-        assertEquals(false, sdk.feature("bool_feature_false")?.value)
+        assertEquals("true", sdk.feature("bool_feature_true")?.value)
+        assertEquals("false", sdk.feature("bool_feature_false")?.value)
         assertEquals("Default value", sdk.feature("string_feature")?.value)
 
-        assertEquals(888, sdk.feature("number_feature")?.value)
-        assertEquals(-1, sdk.feature("number_feature_negative")?.value)
+        assertEquals("888", sdk.feature("number_feature")?.value)
+        assertEquals("-1", sdk.feature("number_feature_negative")?.value)
 
         //Check not exist feature
         assertEquals(null, sdk.feature("no_exist_feature"))

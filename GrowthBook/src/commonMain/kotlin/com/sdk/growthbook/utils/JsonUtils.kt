@@ -16,8 +16,8 @@ fun convertToPrimitiveIfPossible(jsonElement: Any): Any {
             ?: jsonElement.floatOrNull
             ?: jsonElement.booleanOrNull
             ?: jsonElement.contentOrNull
-            ?: jsonElement
+            ?: jsonElement.toString()
     } else {
-        jsonElement
+        jsonElement.toString()
     }
 }

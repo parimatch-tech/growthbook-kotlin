@@ -91,15 +91,7 @@ class GBFeatureResult(
     /**
      * The assigned value of the feature
      */
-    val value: Any?,
-    /**
-     * The assigned value cast to a boolean
-     */
-    val on: Boolean = false,
-    /**
-     * The assigned value cast to a boolean and then negated
-     */
-    val off: Boolean = true,
+    val value: String?,
     /**
      * One of "unknownFeature", "defaultValue", "force", or "experiment"
      */
