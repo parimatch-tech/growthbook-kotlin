@@ -30,7 +30,7 @@ kotlin {
     ).forEach {
         it.binaries.framework {
             baseName = iOSBinaryName
-            embedBitcode("disable")
+            embedBitcode("bitcode")
             xcf.add(this)
         }
     }
