@@ -7,7 +7,7 @@ plugins {
     id("maven-publish")
     id("signing")
     id("org.jetbrains.dokka") version "1.4.20"
-    id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
+    id("io.github.luca992.multiplatform-swiftpackage") version "2.0.4-arm64"
 }
 
 group = "io.growthbook.sdk"

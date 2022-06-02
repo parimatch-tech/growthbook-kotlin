@@ -5,6 +5,7 @@ buildscript {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven ("https://s01.oss.sonatype.org/content/repositories/releases/")
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
@@ -18,6 +19,7 @@ allprojects {
         google()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
+        maven ("https://s01.oss.sonatype.org/content/repositories/releases/")
     }
 }
 
